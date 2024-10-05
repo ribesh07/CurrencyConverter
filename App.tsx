@@ -83,6 +83,7 @@ export default function App() {
                 data={currencyByNPR}
                 keyExtractor={ item => item.name }
                 renderItem={({ item }) => (
+                  <>
                   <Pressable
                     style={[styles.button,targetCurrency === item.name && styles.selected ]}
                   onPress={() =>{
@@ -91,6 +92,7 @@ export default function App() {
                   >
                     <CurrencyInput {...item} />
                   </Pressable>
+                  </>
                 )}
               />
             </View>

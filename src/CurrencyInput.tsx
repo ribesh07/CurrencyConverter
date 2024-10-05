@@ -1,18 +1,22 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable semi */
-import { StyleSheet, Text, View } from 'react-native'
+import { Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native'
 import React, { PropsWithChildren } from 'react'
+
 
 type CurrencyInputProps = PropsWithChildren<{
     name : string;
-    flag : string
+    flag : ImageSourcePropType;
+    symbol : string;
 }>
 
 export default function CurrencyInput( props : CurrencyInputProps) {
   return (
     <>
         <View style={styles.buttonContainer}>
-            <Text style={styles.flag}>{props.flag}</Text>
+            <Text style={styles.flag}>{props.symbol}</Text>
             <Text style = {styles.country}>{props.name}</Text>
+            <Image source={props.flag} style={{height:50,width:50}}/>
         </View>
     </>
   )

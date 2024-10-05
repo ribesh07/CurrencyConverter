@@ -2,7 +2,7 @@
 interface Currency {
     name: string,
     value: number,
-    flag : string
+    flag : ImageSourcePropType,
     symbol: string,
   }
 
