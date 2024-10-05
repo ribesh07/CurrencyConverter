@@ -1,118 +1,133 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable semi */
+import { Dimensions, FlatList, Pressable, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, View } from 'react-native'
+import React, { useState } from 'react'
+import Snackbar from 'react-native-snackbar'
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+// const statusBarHeight = StatusBar.currentHeight;
+// console.log(statusBarHeight)
+// const newdata = statusBarHeight !== undefined ? statusBarHeight + 5 : 0;
+// console.log(newdata)
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+//constants
+import { currencyByNPR } from './src/constants'
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+//component
+import CurrencyInput from './src/CurrencyInput'
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+export default function App() {
+  const [input ,setInput ] = useState('');
+  const [result ,setResult ] = useState('');
+  const [targetCurrency , settargetCurrency ] = useState('')
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const buttonPressed = (targetvalue : Currency) => {
+    if(!input){
+      return Snackbar.show({
+        text : 'Enter value ',
+        backgroundColor : 'red' ,
+        textColor : 'black',
+      })
+    }
+    const value = parseFloat(input);
+    console.log(value)
+
+    if(!isNaN(value)){
+      const convertedValue = value * targetvalue.value
+      const resultOp = `${targetvalue.symbol} ${convertedValue.toFixed(2) }`
+      setResult(resultOp)
+      settargetCurrency(targetvalue.name)
+    }
+    else{
+      return Snackbar.show({
+        text : 'Not a valid Number ! ',
+        backgroundColor : 'red' ,
+        textColor : 'black',
+      })
+    }
+  }
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+    <>
+      <SafeAreaView>
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={[styles.contained]}>
+                <Text style={styles.textHeading}>Currency Converter</Text>
+            </View>
+            <View style={styles.ListFlat}>
+              <Text style={{
+                fontSize : 20,
+                fontWeight : 'bold',
+                color : 'blue',
+                padding : 2 ,
+                textAlign : 'center',
+              }}>Input Currency</Text>
+              <TextInput
+                maxLength={14}
+                value={input}
+                clearButtonMode = "always" //for ios
+                onChangeText = {setInput}
+                keyboardType = "number-pad"
+                placeholder="Enter amount in Rupees "
+              />
+              {
+                result && <>
+                  <Text>
+                    {result}
+                  </Text>
+                </>
+              }
+              <FlatList
+                numColumns={3}
+                data={currencyByNPR}
+                keyExtractor={ item => item.name }
+                renderItem={({ item }) => (
+                  <Pressable
+                    style={[styles.button,targetCurrency === item.name && styles.selected ]}
+                  onPress={() =>{
+                    buttonPressed(item)
+                  }}
+                  >
+                    <CurrencyInput {...item} />
+                  </Pressable>
+                )}
+              />
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </>
+  )
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    // backgroundColor: 'grey',
+    alignItems: 'center',
+    // justifyContent: 'center',
   },
-  sectionTitle: {
+  contained: {
+    // flex: 1,
+    backgroundColor: 'grey',
+    padding: 8,
+    marginBottom: 8,
+    height :StatusBar.currentHeight !== undefined ? StatusBar.currentHeight + 2 : 0,
+    width :Dimensions.get('window').width,
+  },
+  textHeading: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: 'bold',
+    color: '#000',
+    textAlign : 'center',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  ListFlat: {
+    // height : 100,
+    // width : 100 ,
+    alignItems : 'center',
+    justifyContent : 'center',
   },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+  selected :{},
+  button : {},
+})
