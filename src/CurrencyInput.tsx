@@ -13,10 +13,10 @@ type CurrencyInputProps = PropsWithChildren<{
 export default function CurrencyInput( props : CurrencyInputProps) {
   return (
     <>
-        <View style={styles.buttonContainer}>
-            <Text style={styles.flag}>{props.symbol}</Text>
+        <View style={[styles.buttonContainer,styles.elevatedButton]}>
+            <Image source={props.flag} style={{height:80,width:80}}/>
+            <Text style={styles.symbol}>{props.symbol}</Text>
             <Text style = {styles.country}>{props.name}</Text>
-            <Image source={props.flag} style={{height:50,width:50}}/>
         </View>
     </>
   )
@@ -25,11 +25,25 @@ export default function CurrencyInput( props : CurrencyInputProps) {
 const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: 'center',
+    justifyContent : 'center',
+    padding : 14,
+    margin : 10,
+    borderRadius : 10,
+    backgroundColor : 'lightgrey',
   },
-  flag : {
+  elevatedButton : {
+    elevation : 10,
+    shadowColor : 'black',
+    shadowOffset : {
+      width : 0,
+      height : 2,
+    },
+    shadowOpacity : 0.5,
+  },
+  symbol : {
     fontSize : 20,
     fontWeight : 'bold',
-    color : 'blue',
+    color : 'black',
     padding : 2 ,
     marginBottom : 5,
     textAlign : 'center',

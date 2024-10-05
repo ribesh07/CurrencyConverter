@@ -59,11 +59,24 @@ export default function App() {
               <Text style={{
                 fontSize : 20,
                 fontWeight : 'bold',
-                color : 'blue',
+                color : 'black',
                 padding : 2 ,
                 textAlign : 'center',
-              }}>Input Currency</Text>
+                marginTop : 20,
+                marginBottom:8,
+              }}>NPR : रु</Text>
               <TextInput
+                style={{
+                  marginVertical : 10,
+                  marginBottom : 20,
+                  padding : 10,
+                  borderWidth : 1,
+                  borderRadius : 5,
+                  borderColor : 'grey',
+                  width : '80%',
+                  textAlign : 'center',
+                  fontSize : 20,
+                }}
                 maxLength={14}
                 value={input}
                 clearButtonMode = "always" //for ios
@@ -73,7 +86,14 @@ export default function App() {
               />
               {
                 result && <>
-                  <Text>
+                  <Text style={{
+                    fontSize : 20,
+                    fontWeight : 'bold',
+                    color : 'black',
+                    padding : 2 ,
+                    textAlign : 'center',
+                    marginBottom : 20,
+                  }}>
                     {result}
                   </Text>
                 </>
@@ -121,7 +141,7 @@ const styles = StyleSheet.create({
   textHeading: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#fff',
     textAlign : 'center',
   },
   ListFlat: {
@@ -129,7 +149,11 @@ const styles = StyleSheet.create({
     // width : 100 ,
     alignItems : 'center',
     justifyContent : 'center',
+    borderRadius : 10,
   },
-  selected :{},
+  selected :{
+    backgroundColor : 'aqua',
+    borderRadius : 10,
+  },
   button : {},
 })
